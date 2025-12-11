@@ -17,10 +17,9 @@ books_data = []
 books = soup.find_all("article", class_="product_pod")
 
 for book in books:
-    title = book.h3.a["title"]
+    title = book.find('h3').find('a')["title"]
     price_text = book.find("p", class_="price_color").text.strip()
-    price_text = price_text.replace("£", "").replace("Â", "")
-    price = float(price_text)
+    price = float(re.findall(r'[\d.]+', price_text)[0])
     rating = book.find("p", class_=re.compile(r"^star-rating"))["class"][1]
     availability = book.find("p", class_="instock availability").text.strip()
     img_src = book.find("img")["src"].replace("../", "")
